@@ -24,7 +24,6 @@ class TaskResource extends JsonResource
             "estimated_hours" => $this->estimated_hours,
             "spent_hours" => $this->spent_hours,
 
-            // Calcular percentual de horas gastas
             "progress" => $this->spent_hours
                 ? round(($this->spent_hours / $this->estimated_hours) * 100)
                 : 0,

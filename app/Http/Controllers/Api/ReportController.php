@@ -50,7 +50,7 @@ class ReportController extends Controller
 
         try {
             $fileName = "relatorio_projeto_{$project->id}_" . time();
-            $reportPath = base_path('resources/reports/relatorio_projetos.jrxml'); // ✅ corrigido
+            $reportPath = base_path('resources/reports/relatorio_projetos.jrxml');
             $outputPath = storage_path("app/reports/$fileName");
 
             if (!file_exists(storage_path("app/reports"))) {
@@ -67,7 +67,7 @@ class ReportController extends Controller
             }
 
             return response()->download($pdfPath, "relatorio_projeto_{$project->name}.pdf")
-                             ->deleteFileAfterSend(true);
+                ->deleteFileAfterSend(true);
 
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erro ao gerar relatório', 'message' => $e->getMessage()], 500);
@@ -80,7 +80,7 @@ class ReportController extends Controller
 
         try {
             $fileName = "relatorio_tarefas_{$project->id}_" . time();
-            $reportPath = base_path('resources/reports/relatorio_tarefas.jrxml'); // ✅ corrigido
+            $reportPath = base_path('resources/reports/relatorio_tarefas.jrxml');
             $outputPath = storage_path("app/reports/$fileName");
 
             if (!file_exists(storage_path("app/reports"))) {
@@ -97,7 +97,7 @@ class ReportController extends Controller
             }
 
             return response()->download($pdfPath, "relatorio_tarefas_{$project->name}.pdf")
-                             ->deleteFileAfterSend(true);
+                ->deleteFileAfterSend(true);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -110,7 +110,7 @@ class ReportController extends Controller
 
         try {
             $fileName = "relatorio_equipe_{$project->id}_" . time();
-            $reportPath = base_path('resources/reports/relatorio_equipe.jrxml'); // ✅ corrigido
+            $reportPath = base_path('resources/reports/relatorio_equipe.jrxml');
             $outputPath = storage_path("app/reports/$fileName");
 
             if (!file_exists(storage_path("app/reports"))) {
@@ -127,7 +127,7 @@ class ReportController extends Controller
             }
 
             return response()->download($pdfPath, "relatorio_equipe_{$project->name}.pdf")
-                             ->deleteFileAfterSend(true);
+                ->deleteFileAfterSend(true);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -150,9 +150,9 @@ class ReportController extends Controller
             $fileName = "relatorio_{$reportType}_{$project->id}_" . time();
 
             $reportMap = [
-                'projeto' => 'relatorio_projetos.jrxml', // ✅ corrigido
-                'tarefas' => 'relatorio_tarefas.jrxml',  // ✅ corrigido
-                'equipe' => 'relatorio_equipe.jrxml',    // ✅ corrigido
+                'projeto' => 'relatorio_projetos.jrxml',
+                'tarefas' => 'relatorio_tarefas.jrxml',
+                'equipe' => 'relatorio_equipe.jrxml',
             ];
 
             $reportPath = base_path("resources/reports/{$reportMap[$reportType]}");
@@ -175,7 +175,7 @@ class ReportController extends Controller
             }
 
             return response()->download($fullPath, "relatorio_{$reportType}_{$project->name}.$format")
-                             ->deleteFileAfterSend(true);
+                ->deleteFileAfterSend(true);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
