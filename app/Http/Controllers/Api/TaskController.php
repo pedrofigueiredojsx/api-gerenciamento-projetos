@@ -49,10 +49,10 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'due_date' => 'required|date|after:today', // Não pode ser data passada
+            'due_date' => 'required|date|after:today',
             'priority' => 'required|in:baixa,média,alta',
             'estimated_hours' => 'nullable|integer|min:1',
-            'assigned_to' => 'nullable|exists:users,id', // Usuário deve existir
+            'assigned_to' => 'nullable|exists:users,id', 
         ]);
 
         $task = $project->tasks()->create($validated);

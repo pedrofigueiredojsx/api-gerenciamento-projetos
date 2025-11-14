@@ -18,15 +18,30 @@ class ProjectController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $projects = Project::where("user_id", $request->user()->id)
-            ->orWhereHas("teamMembers", function ($q) {
-                $q->where("user_id", auth()->id());
-            })
+        $query = Project::where(function ($q) use ($request) {
+            $q->where("user_id", $request->user()->id)
+                ->orWhereHas("teamMembers", function ($q2) {
+                    $q2->where("user_id", auth()->id());
+                });
+        });
+
+        if ($request->has('status') && $request->status !== 'all') {
+            $status = strtolower($request->status);
+
+            if ($status === 'concluido') {
+                $status = 'concluído';
+            }
+
+            $query->whereRaw('LOWER(status) LIKE ?', [$status . '%']);
+        }
+
+        $projects = $query
             ->with(["owner", "teamMembers", "tasks"])
             ->paginate(10);
 
         return ProjectResource::collection($projects);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,8 +55,9 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date', // end_date deve ser depois de start_date
+            'end_date' => 'nullable|date|after:start_date',
             'budget' => 'nullable|integer|min:0',
+            'status' => 'required|in:planejamento,em_progresso,concluído,pausado'
         ]);
 
         $project = $request->user()->projects()->create($validated);
